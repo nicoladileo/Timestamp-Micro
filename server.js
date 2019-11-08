@@ -37,12 +37,14 @@ app.get("/api/timestamp/:date_string?", function (req,res) {
       //Maybe is a date string
       date = new Date(date_string);
     }
-    
   }
   else {
     date = new Date();
   }
-  res.json({"unix": date.getTime(), "utc": date.toUTCString()});
+  if (date instanceof Date && isFinite(date))
+    res.json({"unix": date.getTime(), "utc": date.toUTCString()});
+  else
+    res.json({"error":"Invalid Date"});
 });
 
 function isNumeric(num){
